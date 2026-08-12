@@ -3,48 +3,177 @@
 <head>
     <meta charset="utf-8" />
     <meta name="viewport" content="width=device-width, initial-scale=1.0" />
-    <title>@ViewData["Title"] - ABCRetail</title>
+
+    <title>@ViewData["Title"] - DG Retail</title>
+
     <script type="importmap"></script>
-    <link rel="stylesheet" href="~/lib/bootstrap/dist/css/bootstrap.min.css" />
-    <link rel="stylesheet" href="~/css/site.css" asp-append-version="true" />
-    <link rel="stylesheet" href="~/ABCRetail.styles.css" asp-append-version="true" />
+
+    <link rel="stylesheet"
+          href="~/lib/bootstrap/dist/css/bootstrap.min.css" />
+
+    <link rel="stylesheet"
+          href="~/css/site.css"
+          asp-append-version="true" />
+
+    <link rel="stylesheet"
+          href="~/DGRetail.styles.css"
+          asp-append-version="true" />
+
+    <!-- Bootstrap Icons -->
+    <link rel="stylesheet"
+          href="https://cdn.jsdelivr.net/npm/bootstrap-icons@1.11.3/font/bootstrap-icons.min.css" />
 </head>
+
 <body>
+
+    <!-- Navigation -->
     <header>
-        <nav class="navbar navbar-expand-sm navbar-toggleable-sm navbar-light bg-white border-bottom box-shadow mb-3">
-            <div class="container-fluid">
-                <a class="navbar-brand" asp-area="" asp-controller="Home" asp-action="Index">ABCRetail</a>
-                <button class="navbar-toggler" type="button" data-bs-toggle="collapse" data-bs-target=".navbar-collapse" aria-controls="navbarSupportedContent"
-                        aria-expanded="false" aria-label="Toggle navigation">
+        <nav class="navbar navbar-expand-lg navbar-dark bg-dark shadow-sm">
+
+            <div class="container">
+
+                <!-- Brand -->
+                <a class="navbar-brand fw-bold"
+                   asp-area=""
+                   asp-controller="Home"
+                   asp-action="Index">
+
+                    <i class="bi bi-shop me-2"></i>
+                    DG Retail
+
+                </a>
+
+                <!-- Mobile menu button -->
+                <button class="navbar-toggler"
+                        type="button"
+                        data-bs-toggle="collapse"
+                        data-bs-target="#mainNavigation"
+                        aria-controls="mainNavigation"
+                        aria-expanded="false"
+                        aria-label="Toggle navigation">
+
                     <span class="navbar-toggler-icon"></span>
+
                 </button>
-                <div class="navbar-collapse collapse d-sm-inline-flex justify-content-between">
-                    <ul class="navbar-nav flex-grow-1">
+
+                <!-- Navigation links -->
+                <div class="collapse navbar-collapse"
+                     id="mainNavigation">
+
+                    <ul class="navbar-nav ms-auto">
+
+                        <!-- Dashboard -->
                         <li class="nav-item">
-                            <a class="nav-link text-dark" asp-area="" asp-controller="Home" asp-action="Index">Home</a>
+                            <a class="nav-link"
+                               asp-area=""
+                               asp-controller="Home"
+                               asp-action="Index">
+
+                                <i class="bi bi-speedometer2 me-1"></i>
+                                Dashboard
+
+                            </a>
                         </li>
+
+                        <!-- Orders -->
                         <li class="nav-item">
-                            <a class="nav-link text-dark" asp-area="" asp-controller="Home" asp-action="Privacy">Privacy</a>
+                            <a class="nav-link"
+                               asp-area=""
+                               asp-controller="Orders"
+                               asp-action="Index">
+
+                                <i class="bi bi-cart3 me-1"></i>
+                                Orders
+
+                            </a>
                         </li>
+
+                        <!-- Products -->
+                        <li class="nav-item">
+                            <a class="nav-link"
+                               asp-area=""
+                               asp-controller="Products"
+                               asp-action="Index">
+
+                                <i class="bi bi-images me-1"></i>
+                                Products
+
+                            </a>
+                        </li>
+
+                        <!-- Transactions -->
+                        <li class="nav-item">
+                            <a class="nav-link"
+                               asp-area=""
+                               asp-controller="Transactions"
+                               asp-action="Index">
+
+                                <i class="bi bi-arrow-left-right me-1"></i>
+                                Transactions
+
+                            </a>
+                        </li>
+
+                        <!-- Files -->
+                        <li class="nav-item">
+                            <a class="nav-link"
+                               asp-area=""
+                               asp-controller="Files"
+                               asp-action="Index">
+
+                                <i class="bi bi-folder2-open me-1"></i>
+                                Files
+
+                            </a>
+                        </li>
+
                     </ul>
+
                 </div>
+
             </div>
+
         </nav>
     </header>
-    <div class="container">
-        <main role="main" class="pb-3">
-            @RenderBody()
-        </main>
-    </div>
 
-    <footer class="border-top footer text-muted">
-        <div class="container">
-            &copy; 2026 - ABCRetail - <a asp-area="" asp-controller="Home" asp-action="Privacy">Privacy</a>
+
+    <!-- Main Content -->
+    <main role="main" class="main-content">
+
+        @RenderBody()
+
+    </main>
+
+
+    <!-- Footer -->
+    <footer class="border-top footer text-muted mt-5">
+
+        <div class="container text-center py-3">
+
+            <span>
+                &copy; @DateTime.Now.Year ABC Retail
+            </span>
+
+            <span class="mx-2">|</span>
+
+            <span>
+                Azure Cloud Storage Application
+            </span>
+
         </div>
+
     </footer>
+
+
+    <!-- JavaScript -->
     <script src="~/lib/jquery/dist/jquery.min.js"></script>
+
     <script src="~/lib/bootstrap/dist/js/bootstrap.bundle.min.js"></script>
-    <script src="~/js/site.js" asp-append-version="true"></script>
+
+    <script src="~/js/site.js"
+            asp-append-version="true"></script>
+
     @await RenderSectionAsync("Scripts", required: false)
+
 </body>
 </html>

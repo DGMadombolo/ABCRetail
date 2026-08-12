@@ -1,0 +1,66 @@
+﻿@model IEnumerable<ABCRetail.Models.ProductImage>
+
+@{
+    ViewData["Title"] = "Product Images";
+}
+
+<div class="container mt-4">
+
+    <div class="d-flex justify-content-between align-items-center mb-4">
+        <div>
+            <h1>Product Images</h1>
+            <p class="text-muted">
+                Images stored in Azure Blob Storage
+            </p>
+        </div>
+
+        <a asp-controller="Products"
+           asp-action="Upload"
+           class="btn btn-primary">
+            + Upload Image
+        </a>
+    </div>
+
+    @if (Model != null && Model.Any())
+    {
+        <div class="row g-4">
+
+            @foreach (var image in Model)
+            {
+                <div class="col-md-4 col-lg-3">
+
+                    <div class="card h-100 shadow-sm">
+
+                        <img src="@image.ImageUrl"
+                             class="card-img-top"
+                             alt="@image.FileName"
+                             style="height: 200px; object-fit: cover;" />
+
+                        <div class="card-body">
+
+                            <h6 class="card-title text-truncate">
+                                @image.FileName
+                            </h6>
+
+                            <small class="text-muted">
+                                Uploaded:
+                                @image.UploadedAt.ToString("dd/MM/yyyy HH:mm")
+                            </small>
+
+                        </div>
+
+                    </div>
+
+                </div>
+            }
+
+        </div>
+    }
+    else
+    {
+        <div class="alert alert-info">
+            No product images have been uploaded yet.
+        </div>
+    }
+
+</div>

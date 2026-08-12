@@ -1,0 +1,132 @@
+﻿@model ABCRetail.Models.Transaction
+
+@{
+    ViewData["Title"] = "Create Transaction";
+}
+
+<div class="container mt-4">
+
+    <div class="row justify-content-center">
+
+        <div class="col-md-7">
+
+            <div class="card shadow-sm">
+
+                <div class="card-header">
+                    <h3 class="mb-0">Create Transaction</h3>
+                </div>
+
+                <div class="card-body">
+
+                    <form asp-action="Create" method="post">
+
+                        @Html.AntiForgeryToken()
+
+                        <div asp-validation-summary="ModelOnly"
+                             class="text-danger mb-3">
+                        </div>
+
+                        <div class="mb-3">
+                            <label asp-for="OrderId"
+                                   class="form-label">
+                                Order ID
+                            </label>
+
+                            <input asp-for="OrderId"
+                                   class="form-control"
+                                   placeholder="Example: ORD001" />
+
+                            <span asp-validation-for="OrderId"
+                                  class="text-danger">
+                            </span>
+                        </div>
+
+                        <div class="mb-3">
+                            <label asp-for="ProductName"
+                                   class="form-label">
+                                Product Name
+                            </label>
+
+                            <input asp-for="ProductName"
+                                   class="form-control"
+                                   placeholder="Example: Laptop" />
+
+                            <span asp-validation-for="ProductName"
+                                  class="text-danger">
+                            </span>
+                        </div>
+
+                        <div class="mb-3">
+                            <label asp-for="Quantity"
+                                   class="form-label">
+                                Quantity
+                            </label>
+
+                            <input asp-for="Quantity"
+                                   type="number"
+                                   min="1"
+                                   class="form-control"
+                                   placeholder="Enter quantity" />
+
+                            <span asp-validation-for="Quantity"
+                                  class="text-danger">
+                            </span>
+                        </div>
+
+                        <div class="mb-3">
+                            <label asp-for="TransactionType"
+                                   class="form-label">
+                                Transaction Type
+                            </label>
+
+                            <select asp-for="TransactionType"
+                                    class="form-select">
+
+                                <option value="Order">
+                                    Order
+                                </option>
+
+                                <option value="Inventory">
+                                    Inventory
+                                </option>
+
+                                <option value="Restock">
+                                    Restock
+                                </option>
+
+                            </select>
+
+                        </div>
+
+                        <div class="d-flex gap-2">
+
+                            <button type="submit"
+                                    class="btn btn-primary">
+                                Add Transaction
+                            </button>
+
+                            <a asp-action="Index"
+                               class="btn btn-secondary">
+                                Cancel
+                            </a>
+
+                        </div>
+
+                    </form>
+
+                </div>
+
+            </div>
+
+        </div>
+
+    </div>
+
+</div>
+
+@section Scripts {
+    @{
+        await Html.RenderPartialAsync(
+            "_ValidationScriptsPartial");
+    }
+}

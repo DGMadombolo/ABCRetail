@@ -1,8 +1,182 @@
 ﻿@{
-    ViewData["Title"] = "Home Page";
+    ViewData["Title"] = "Dashboard";
 }
 
-<div class="text-center">
-    <h1 class="display-4">Welcome</h1>
-    <p>Learn about <a href="https://learn.microsoft.com/aspnet/core">building Web apps with ASP.NET Core</a>.</p>
+<div class="container py-5">
+
+    <!-- Welcome Section -->
+    <div class="mb-5">
+        <h1 class="display-5 fw-bold">
+            Welcome to DG Retail
+        </h1>
+
+        <p class="lead text-muted">
+            Azure-powered retail management and cloud storage system.
+        </p>
+    </div>
+
+    <!-- Main Service Cards -->
+    <div class="row g-4">
+
+        <!-- Orders -->
+        <div class="col-md-6 col-lg-3">
+            <div class="card dashboard-card h-100 shadow-sm">
+                <div class="card-body">
+
+                    <div class="d-flex justify-content-between align-items-center mb-3">
+                        <h5 class="card-title mb-0">Orders</h5>
+                        <i class="bi bi-cart3 fs-2 text-primary"></i>
+                    </div>
+
+                    <p class="card-text text-muted">
+                        Manage customer orders stored in Azure Table Storage.
+                    </p>
+
+                    <a asp-controller="Orders"
+                       asp-action="Index"
+                       class="btn btn-primary">
+                        View Orders
+                    </a>
+
+                </div>
+            </div>
+        </div>
+
+        <!-- Products -->
+        <div class="col-md-6 col-lg-3">
+            <div class="card dashboard-card h-100 shadow-sm">
+                <div class="card-body">
+
+                    <div class="d-flex justify-content-between align-items-center mb-3">
+                        <h5 class="card-title mb-0">Products</h5>
+                        <i class="bi bi-images fs-2 text-success"></i>
+                    </div>
+
+                    <p class="card-text text-muted">
+                        Upload and manage product images using Azure Blob Storage.
+                    </p>
+
+                    <a asp-controller="Products"
+                       asp-action="Index"
+                       class="btn btn-success">
+                        View Products
+                    </a>
+
+                </div>
+            </div>
+        </div>
+
+        <!-- Transactions -->
+        <div class="col-md-6 col-lg-3">
+            <div class="card dashboard-card h-100 shadow-sm">
+                <div class="card-body">
+
+                    <div class="d-flex justify-content-between align-items-center mb-3">
+                        <h5 class="card-title mb-0">Transactions</h5>
+                        <i class="bi bi-arrow-left-right fs-2 text-warning"></i>
+                    </div>
+
+                    <p class="card-text text-muted">
+                        Process transactions through Azure Queue Storage.
+                    </p>
+
+                    <a asp-controller="Transactions"
+                       asp-action="Index"
+                       class="btn btn-warning">
+                        View Transactions
+                    </a>
+
+                </div>
+            </div>
+        </div>
+
+        <!-- Files -->
+        <div class="col-md-6 col-lg-3">
+            <div class="card dashboard-card h-100 shadow-sm">
+                <div class="card-body">
+
+                    <div class="d-flex justify-content-between align-items-center mb-3">
+                        <h5 class="card-title mb-0">Files</h5>
+                        <i class="bi bi-folder2-open fs-2 text-info"></i>
+                    </div>
+
+                    <p class="card-text text-muted">
+                        Upload and download documents using Azure File Storage.
+                    </p>
+
+                    <a asp-controller="Files"
+                       asp-action="Index"
+                       class="btn btn-info text-white">
+                        View Files
+                    </a>
+
+                </div>
+            </div>
+        </div>
+
+    </div>
+
+    <!-- Azure Services -->
+    <div class="card shadow-sm mt-5">
+        <div class="card-body p-4">
+
+            <h3 class="mb-4">
+                Azure Cloud Storage Services
+            </h3>
+
+            <div class="row text-center">
+
+                <div class="col-md-3 mb-3">
+                    <i class="bi bi-table fs-1 text-primary"></i>
+
+                    <h5 class="mt-2">
+                        Table Storage
+                    </h5>
+
+                    <p class="text-muted small">
+                        Structured retail data
+                    </p>
+                </div>
+
+                <div class="col-md-3 mb-3">
+                    <i class="bi bi-cloud-arrow-up fs-1 text-success"></i>
+
+                    <h5 class="mt-2">
+                        Blob Storage
+                    </h5>
+
+                    <p class="text-muted small">
+                        Product multimedia
+                    </p>
+                </div>
+
+                <div class="col-md-3 mb-3">
+                    <i class="bi bi-list-check fs-1 text-warning"></i>
+
+                    <h5 class="mt-2">
+                        Queue Storage
+                    </h5>
+
+                    <p class="text-muted small">
+                        Transaction processing
+                    </p>
+                </div>
+
+                <div class="col-md-3 mb-3">
+                    <i class="bi bi-folder fs-1 text-info"></i>
+
+                    <h5 class="mt-2">
+                        File Storage
+                    </h5>
+
+                    <p class="text-muted small">
+                        Documents and files
+                    </p>
+                </div>
+
+            </div>
+
+        </div>
+    </div>
+
 </div>

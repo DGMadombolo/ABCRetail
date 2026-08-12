@@ -361,3 +361,14 @@ MigrationBackup/
 
 # Fody - auto-generated XML schema
 FodyWeavers.xsd
+
+# Local development secrets
+secrets.json
+*.secrets.json
+
+# ASP.NET Core development configuration
+appsettings.Development.json
+
+# Azure publish profiles
+*.pubxml
+*.publishsettings
