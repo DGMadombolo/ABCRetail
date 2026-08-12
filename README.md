@@ -30,7 +30,7 @@ File share: abc-retail-files
 
 Architecture
 
-ABCRetail
+DG Retail
 │
 ├── Controllers
 │   ├── HomeController.cs
