@@ -6,11 +6,14 @@
 
 <div class="container mt-4">
 
+    <!-- Page Header -->
     <div class="d-flex justify-content-between align-items-center mb-4">
+
         <div>
-            <h1>Product Images</h1>
-            <p class="text-muted">
-                Images stored in Azure Blob Storage
+            <h1 class="fw-bold">Product Images</h1>
+
+            <p class="text-muted mb-0">
+                Images stored securely in Azure Blob Storage
             </p>
         </div>
 
@@ -19,7 +22,17 @@
            class="btn btn-primary">
             + Upload Image
         </a>
+
     </div>
+
+
+    @if (ViewBag.ErrorMessage != null)
+    {
+        <div class="alert alert-danger">
+            @ViewBag.ErrorMessage
+        </div>
+    }
+
 
     @if (Model != null && Model.Any())
     {
@@ -27,25 +40,38 @@
 
             @foreach (var image in Model)
             {
-                <div class="col-md-4 col-lg-3">
+                <div class="col-sm-6 col-md-4 col-lg-3">
 
-                    <div class="card h-100 shadow-sm">
+                    <div class="card product-card h-100 shadow-sm">
 
-                        <img src="@image.ImageUrl"
-                             class="card-img-top"
-                             alt="@image.FileName"
-                             style="height: 200px; object-fit: cover;" />
+                        <!-- Image -->
+                        <div class="product-image-container">
 
+                            <img src="@image.ImageUrl"
+                                 alt="@image.FileName"
+                                 class="product-image"
+                                 loading="lazy" />
+
+                        </div>
+
+
+                        <!-- Information -->
                         <div class="card-body">
 
-                            <h6 class="card-title text-truncate">
+                            <h6 class="card-title text-truncate"
+                                title="@image.FileName">
+
                                 @image.FileName
+
                             </h6>
 
-                            <small class="text-muted">
+                            <p class="text-muted small mb-0">
+
                                 Uploaded:
-                                @image.UploadedAt.ToString("dd/MM/yyyy HH:mm")
-                            </small>
+                                @image.UploadedAt.ToString(
+                                    "dd/MM/yyyy HH:mm")
+
+                            </p>
 
                         </div>
 
@@ -58,8 +84,14 @@
     }
     else
     {
-        <div class="alert alert-info">
-            No product images have been uploaded yet.
+        <div class="alert alert-info text-center">
+
+            <h5>No Product Images</h5>
+
+            <p class="mb-0">
+                Upload your first product image to Azure Blob Storage.
+            </p>
+
         </div>
     }
 

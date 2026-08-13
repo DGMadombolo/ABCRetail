@@ -17,14 +17,24 @@ namespace ABCRetail.Controllers
         {
             try
             {
+                Console.WriteLine("===== LOADING PRODUCT IMAGES =====");
+
                 var images = await _blobService.GetImagesAsync();
+
+                Console.WriteLine(
+                    $"Images loaded successfully: {images.Count}");
 
                 return View(images);
             }
             catch (Exception ex)
             {
+                Console.WriteLine("===== ERROR LOADING IMAGES =====");
+                Console.WriteLine(ex.ToString());
+
                 ViewBag.ErrorMessage = ex.Message;
-                return View(new List<ABCRetail.Models.ProductImage>());
+
+                return View(
+                    new List<ABCRetail.Models.ProductImage>());
             }
         }
 
@@ -32,6 +42,8 @@ namespace ABCRetail.Controllers
         [HttpGet]
         public IActionResult Upload()
         {
+            Console.WriteLine("===== UPLOAD PAGE OPENED =====");
+
             return View();
         }
 
@@ -40,45 +52,99 @@ namespace ABCRetail.Controllers
         [ValidateAntiForgeryToken]
         public async Task<IActionResult> Upload(IFormFile file)
         {
-            if (file == null || file.Length == 0)
-            {
-                ModelState.AddModelError(
-                    "file",
-                    "Please select an image.");
-
-                return View();
-            }
-
-            string[] allowedExtensions =
-            {
-                ".jpg",
-                ".jpeg",
-                ".png",
-                ".gif",
-                ".webp"
-            };
-
-            string extension =
-                Path.GetExtension(file.FileName)
-                    .ToLowerInvariant();
-
-            if (!allowedExtensions.Contains(extension))
-            {
-                ModelState.AddModelError(
-                    "file",
-                    "Only JPG, JPEG, PNG, GIF and WEBP images are allowed.");
-
-                return View();
-            }
+            // IMPORTANT DEBUG MESSAGE
+            Console.WriteLine(
+                "🔥🔥🔥 UPLOAD METHOD WAS CALLED 🔥🔥🔥");
 
             try
             {
-                await _blobService.UploadImageAsync(file);
+                // Check file
+                if (file == null || file.Length == 0)
+                {
+                    Console.WriteLine(
+                        "ERROR: No file was selected.");
+
+                    ModelState.AddModelError(
+                        "file",
+                        "Please select an image.");
+
+                    return View();
+                }
+
+                Console.WriteLine(
+                    $"File name: {file.FileName}");
+
+                Console.WriteLine(
+                    $"File size: {file.Length} bytes");
+
+                Console.WriteLine(
+                    $"Content type: {file.ContentType}");
+
+                // Allowed extensions
+                string[] allowedExtensions =
+                {
+                    ".jpg",
+                    ".jpeg",
+                    ".png",
+                    ".gif",
+                    ".webp"
+                };
+
+                string extension =
+                    Path.GetExtension(file.FileName)
+                        .ToLowerInvariant();
+
+                Console.WriteLine(
+                    $"File extension: {extension}");
+
+                // Validate extension
+                if (!allowedExtensions.Contains(extension))
+                {
+                    Console.WriteLine(
+                        "ERROR: File extension is not allowed.");
+
+                    ModelState.AddModelError(
+                        "file",
+                        "Only JPG, JPEG, PNG, GIF and WEBP images are allowed.");
+
+                    return View();
+                }
+
+                Console.WriteLine(
+                    "File validation successful.");
+
+                // Upload to Azure
+                Console.WriteLine(
+                    "===== STARTING AZURE BLOB UPLOAD =====");
+
+                var uploadedImage =
+                    await _blobService.UploadImageAsync(file);
+
+                Console.WriteLine(
+                    "===== AZURE BLOB UPLOAD COMPLETED =====");
+
+                Console.WriteLine(
+                    $"Blob name: {uploadedImage.BlobName}");
+
+                Console.WriteLine(
+                    $"Image URL: {uploadedImage.ImageUrl}");
+
+                Console.WriteLine(
+                    "===== REDIRECTING TO PRODUCTS =====");
 
                 return RedirectToAction(nameof(Index));
             }
             catch (Exception ex)
             {
+                Console.WriteLine(
+                    "🔥🔥🔥 IMAGE UPLOAD ERROR 🔥🔥🔥");
+
+                Console.WriteLine(
+                    ex.ToString());
+
+                Console.WriteLine(
+                    "🔥🔥🔥 END IMAGE UPLOAD ERROR 🔥🔥🔥");
+
                 ModelState.AddModelError(
                     "file",
                     $"Upload failed: {ex.Message}");

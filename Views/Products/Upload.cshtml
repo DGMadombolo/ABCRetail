@@ -16,7 +16,8 @@
 
                 <div class="card-body">
 
-                    <form asp-action="Upload"
+                    <form asp-controller="Products"
+                          asp-action="Upload"
                           method="post"
                           enctype="multipart/form-data">
 
@@ -37,12 +38,33 @@
                                    id="file"
                                    name="file"
                                    class="form-control"
-                                   accept=".jpg,.jpeg,.png,.gif,.webp"
-                                   required />
+                                   accept=".jpg,.jpeg,.png,.gif,.webp" />
 
-                            <span class="text-muted">
-                                Supported formats: JPG, JPEG, PNG, GIF, WEBP
-                            </span>
+                            <div class="form-text">
+                                Supported formats:
+                                JPG, JPEG, PNG, GIF, WEBP
+                            </div>
+
+                        </div>
+
+                        <!-- Image preview -->
+                        <div id="previewContainer"
+                             class="mb-3"
+                             style="display: none;">
+
+                            <p class="fw-bold mb-2">
+                                Preview
+                            </p>
+
+                            <img id="imagePreview"
+                                 src="#"
+                                 alt="Image preview"
+                                 style="
+                            max-width: 100%;
+                            max-height: 300px;
+                            border-radius: 10px;
+                            object-fit: contain;
+                            " />
 
                         </div>
 
@@ -53,7 +75,8 @@
                                 Upload Image
                             </button>
 
-                            <a asp-action="Index"
+                            <a asp-controller="Products"
+                               asp-action="Index"
                                class="btn btn-secondary">
                                 Cancel
                             </a>
@@ -71,3 +94,42 @@
     </div>
 
 </div>
+
+
+@section Scripts {
+
+    <script>
+        const fileInput = document.getElementById("file");
+        const preview = document.getElementById("imagePreview");
+        const previewContainer =
+            document.getElementById("previewContainer");
+
+        fileInput.addEventListener("change", function () {
+
+            const file = this.files[0];
+
+            if (!file) {
+                previewContainer.style.display = "none";
+                return;
+            }
+
+            // Only preview images
+            if (!file.type.startsWith("image/")) {
+                previewContainer.style.display = "none";
+                return;
+            }
+
+            const reader = new FileReader();
+
+            reader.onload = function (event) {
+
+                preview.src = event.target.result;
+
+                previewContainer.style.display = "block";
+            };
+
+            reader.readAsDataURL(file);
+        });
+    </script>
+
+}

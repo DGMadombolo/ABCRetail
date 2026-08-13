@@ -1,5 +1,6 @@
 ﻿using Azure.Storage.Blobs;
 using Azure.Storage.Blobs.Models;
+using Azure.Storage.Sas;
 using ABCRetail.Models;
 
 namespace ABCRetail.Services
@@ -35,16 +36,20 @@ namespace ABCRetail.Services
                     "The selected file is empty.");
             }
 
+            // Get the original file extension
             string extension =
                 Path.GetExtension(file.FileName)
                     .ToLowerInvariant();
 
+            // Generate a unique Blob name
+            // This prevents files with the same name from overwriting each other.
             string blobName =
                 $"{Guid.NewGuid()}{extension}";
 
             BlobClient blobClient =
                 _containerClient.GetBlobClient(blobName);
 
+            // Keep the correct image content type
             BlobHttpHeaders headers = new BlobHttpHeaders
             {
                 ContentType = file.ContentType
@@ -52,38 +57,62 @@ namespace ABCRetail.Services
 
             using Stream stream = file.OpenReadStream();
 
+            // Upload image and save the original filename as metadata
             await blobClient.UploadAsync(
                 stream,
                 new BlobUploadOptions
                 {
-                    HttpHeaders = headers
+                    HttpHeaders = headers,
+
+                    Metadata = new Dictionary<string, string>
+                    {
+                        ["OriginalFileName"] = file.FileName
+                    }
                 });
 
             return new ProductImage
             {
+                // Display the original filename
                 FileName = file.FileName,
+
+                // Keep the unique Blob name internally
                 BlobName = blobName,
-                ImageUrl = blobClient.Uri.ToString(),
+
+                // Generate a temporary secure URL
+                ImageUrl = GenerateSasUrl(blobClient),
+
                 UploadedAt = DateTime.UtcNow
             };
         }
 
         // Get all product images
-        public async Task<List<ProductImage>> GetImagesAsync()
+        public async Task<List<ProductImage>> GetImagesAsync(CancellationToken cancellationToken = default)
         {
             List<ProductImage> images = new();
 
-            await foreach (
-                var blobItem in _containerClient.GetBlobsAsync())
+            await foreach (var blobItem in _containerClient.GetBlobsAsync(
+                traits: BlobTraits.Metadata,
+                states: BlobStates.None,
+                prefix: null,
+                cancellationToken: cancellationToken))
             {
                 BlobClient blobClient =
                     _containerClient.GetBlobClient(blobItem.Name);
 
+                string originalFileName = blobItem.Name;
+
+                if (blobItem.Metadata.TryGetValue(
+                    "OriginalFileName",
+                    out string? storedFileName))
+                {
+                    originalFileName = storedFileName;
+                }
+
                 images.Add(new ProductImage
                 {
-                    FileName = blobItem.Name,
+                    FileName = originalFileName,
                     BlobName = blobItem.Name,
-                    ImageUrl = blobClient.Uri.ToString(),
+                    ImageUrl = GenerateSasUrl(blobClient),
                     UploadedAt =
                         blobItem.Properties.CreatedOn?.UtcDateTime
                         ?? DateTime.UtcNow
@@ -91,6 +120,31 @@ namespace ABCRetail.Services
             }
 
             return images;
+        }
+
+        // Generate a temporary read-only SAS URL
+        private string GenerateSasUrl(BlobClient blobClient)
+        {
+            BlobSasBuilder sasBuilder = new BlobSasBuilder
+            {
+                BlobContainerName = _containerClient.Name,
+
+                BlobName = blobClient.Name,
+
+                Resource = "b",
+
+                // SAS URL expires after 1 hour
+                ExpiresOn =
+                    DateTimeOffset.UtcNow.AddHours(1)
+            };
+
+            // Give the URL read-only permission
+            sasBuilder.SetPermissions(
+                BlobSasPermissions.Read);
+
+            return blobClient
+                .GenerateSasUri(sasBuilder)
+                .ToString();
         }
     }
 }
