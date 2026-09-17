@@ -57,7 +57,7 @@ namespace ABCRetail.Services
                 ["CustomerName"] = order.CustomerName,
                 ["ProductName"] = order.ProductName,
                 ["Quantity"] = order.Quantity,
-                ["OrderDate"] = order.OrderDate,
+                ["OrderDate"] = order.OrderDate.ToUniversalTime(),
                 ["Status"] = order.Status
             };
 
