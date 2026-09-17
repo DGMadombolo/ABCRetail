@@ -1,27 +1,37 @@
 <Project Sdk="Microsoft.NET.Sdk.Web">
 
-  <PropertyGroup>
-    <TargetFramework>net10.0</TargetFramework>
-    <Nullable>enable</Nullable>
-    <ImplicitUsings>enable</ImplicitUsings>
-    <UserSecretsId>06dae316-0445-4367-8313-0d9080f268f1</UserSecretsId>
-  </PropertyGroup>
+	<PropertyGroup>
+		<TargetFramework>net10.0</TargetFramework>
+		<Nullable>enable</Nullable>
+		<ImplicitUsings>enable</ImplicitUsings>
+		<UserSecretsId>06dae316-0445-4367-8313-0d9080f268f1</UserSecretsId>
+	</PropertyGroup>
 
-  <ItemGroup>
-    <PackageReference Include="Azure.Data.Tables" Version="12.10.0" />
-    <PackageReference Include="Azure.Storage.Blobs" Version="12.29.0" />
-    <PackageReference Include="Azure.Storage.Files.Shares" Version="12.27.1" />
-    <PackageReference Include="Azure.Storage.Queues" Version="12.27.1" />
-    <PackageReference Include="Microsoft.EntityFrameworkCore" Version="10.0.10" />
-    <PackageReference Include="Microsoft.EntityFrameworkCore.Design" Version="10.0.10">
-      <PrivateAssets>all</PrivateAssets>
-      <IncludeAssets>runtime; build; native; contentfiles; analyzers; buildtransitive</IncludeAssets>
-    </PackageReference>
-    <PackageReference Include="Microsoft.EntityFrameworkCore.SqlServer" Version="10.0.10" />
-    <PackageReference Include="Microsoft.EntityFrameworkCore.Tools" Version="10.0.10">
-      <PrivateAssets>all</PrivateAssets>
-      <IncludeAssets>runtime; build; native; contentfiles; analyzers; buildtransitive</IncludeAssets>
-    </PackageReference>
-  </ItemGroup>
+	<ItemGroup>
+		<PackageReference Include="Azure.Data.Tables" Version="12.10.0" />
+		<PackageReference Include="Azure.Storage.Blobs" Version="12.29.0" />
+		<PackageReference Include="Azure.Storage.Files.Shares" Version="12.27.1" />
+		<PackageReference Include="Azure.Storage.Queues" Version="12.27.1" />
+		<PackageReference Include="Microsoft.EntityFrameworkCore" Version="10.0.10" />
+
+		<PackageReference Include="Microsoft.EntityFrameworkCore.Design" Version="10.0.10">
+			<PrivateAssets>all</PrivateAssets>
+			<IncludeAssets>runtime; build; native; contentfiles; analyzers; buildtransitive</IncludeAssets>
+		</PackageReference>
+
+		<PackageReference Include="Microsoft.EntityFrameworkCore.SqlServer" Version="10.0.10" />
+
+		<PackageReference Include="Microsoft.EntityFrameworkCore.Tools" Version="10.0.10">
+			<PrivateAssets>all</PrivateAssets>
+			<IncludeAssets>runtime; build; native; contentfiles; analyzers; buildtransitive</IncludeAssets>
+		</PackageReference>
+	</ItemGroup>
+
+	<!-- Prevent the MVC project from compiling the Azure Functions project files -->
+	<ItemGroup>
+		<Compile Remove="ABCRetailFunctions\**" />
+		<Content Remove="ABCRetailFunctions\**" />
+		<None Remove="ABCRetailFunctions\**" />
+	</ItemGroup>
 
 </Project>
